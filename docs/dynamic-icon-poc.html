@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>POC: ícone de app dinâmico em React Native</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f5;
+      --fg: #1a1a1a;
+      --muted: #555;
+      --border: #e0e0dc;
+      --code-bg: #fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      line-height: 1.6;
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      margin-bottom: 0.65rem;
+      font-weight: 600;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    h4 {
+      font-size: 0.98rem;
+      margin-top: 1.15rem;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    p { margin: 0.65rem 0; }
+    ul { margin: 0.5rem 0; padding-left: 1.35rem; }
+    ol { margin: 0.5rem 0; padding-left: 1.35rem; }
+    li { margin: 0.35rem 0; }
+    a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    strong { font-weight: 600; }
+    pre {
+      margin: 0.75rem 0;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    code {
+      font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+    }
+    p.note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-left: 3px solid var(--border);
+      padding-left: 0.85rem;
+      margin-top: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <article>
+    <h1>POC: Ícone de app dinâmico em React Native</h1>
+
+    <h2>Objetivo</h2>
+    <p>Esta POC tem como objetivo <strong>analisar a possibilidade</strong> de trocar o ícone do app (launcher) de forma dinâmica.</p>
+
+    <h2>É possível trocar o ícone de forma dinâmica?</h2>
+    <p>Sim porém as plataformas (iOS e Android) apenas permitem <strong>selecionar</strong> entre opções que o sistema já conhece a partir do pacote instalado, não trocar o ícone por qualquer arte nova que chegue só da rede.</p>
+    <p>Para o SO e o launcher, o ícone é identidade do pacote: fica definido na instalação ou numa atualização pela loja.</p>
+    <p>As APIs oficiais só <strong>escolhem variantes já empacotadas no bundle</strong>.</p>
+
+    <h3>Por que as plataformas funcionam assim</h3>
+    <ol>
+      <li><strong>Identidade e revisão</strong> — Lojas esperam que o “ícone do app” esteja ligado ao binário revisto/assinado; ícones totalmente arbitrários em <strong>runtime</strong> abriam margem a confusão e abuso (imitação de outras apps, conteúdo impróprio sem passar pelo mesmo escrutínio do pacote).</li>
+      <li><strong>Contrato explícito</strong> — Tanto <code>CFBundleAlternateIcons</code> como <code>activity-alias</code> são declarações: “estas são as entradas e artes permitidas”.</li>
+    </ol>
+    <p class="note">Isto não impede a app de descarregar imagens para uso dentro da UI (splash, avatar, marketing); só não substitui o mecanismo oficial de ícone na gaveta descrito acima.</p>
+
+    <h2>Como implementar a troca de ícone de forma dinâmica?</h2>
+
+    <h3>Onde colocar os ícones</h3>
+    <ul>
+      <li><strong>iOS:</strong> no <strong>Asset Catalog</strong>, em geral em <code>Images.xcassets</code> (conjuntos <code>.appiconset</code> por variante).</li>
+      <li><strong>Android:</strong> em <code>res/mipmap-*</code> (por exemplo <code>mipmap-hdpi</code>, <code>mipmap-xxhdpi</code>, …) dentro de <code>android/app/src/main/res/</code>.</li>
+    </ul>
+
+    <h3>Bibliotecas de terceiros</h3>
+    <p>Existem opções como:</p>
+    <ul>
+      <li><a href="https://github.com/skb1129/react-native-change-icon">react-native-change-icon</a></li>
+      <li><a href="https://www.npmjs.com/package/@computools/react-native-dynamic-app-icon">@computools/react-native-dynamic-app-icon</a></li>
+    </ul>
+    <p>Ao analisá-las, foi verificado que muitas estão <strong>pouco mantidas ou desatualizadas</strong>, o que aumenta o risco em atualizações futuras do React Native.</p>
+    <h3>Implementação nativa como solução</h3>
+    <p>É preciso um <strong>módulo nativo</strong> para ligar o JavaScript às APIs de cada plataforma.</p>
+
+    <h3>iOS</h3>
+    <ul>
+      <li><code>setAlternateIconName</code> / <code>alternateIconName</code>: só aceita nomes já declarados no <strong>Info.plist</strong> em <code>CFBundleIcons</code> → <code>CFBundleAlternateIcons</code>, cada um ligado a um set no <strong>Asset Catalog</strong> do bundle.</li>
+      <li>Não há API para “inventar” novos ícones em <strong>runtime</strong> por download: sem plist + assets na <strong>mesma build</strong>, não há candidato na home. Depois da build, só se <strong>escolhe</strong> entre o que já veio no pacote.</li>
+    </ul>
+    <p>Exemplo de alternativa em <code>Info.plist</code>:</p>
+    <pre><code>&lt;key&gt;CFBundleAlternateIcons&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;SolIcon&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;CFBundleIconFiles&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;ic_launcher_sol&lt;/string&gt;
+        &lt;/array&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;</code></pre>
+    <p class="note">No Xcode, garante que os sets de ícone alternativos entram no target (p.ex. incluir todos os assets de ícone da app, conforme a opção disponível na tua versão).</p>
+
+    <h3>Android</h3>
+    <ul>
+      <li>Um <code>activity-alias</code> por variante de ícone, todos a apontar para a <code>MainActivity</code>; <code>PackageManager.setComponentEnabledSetting</code> liga só o alias desejado e <code>getComponentEnabledSetting</code> lê o estado.</li>
+    </ul>
+    <p>Exemplo de alias:</p>
+    <pre><code>&lt;activity-alias
+    android:name=".MainActivitySol"
+    android:targetActivity=".MainActivity"
+    android:icon="@mipmap/ic_launcher_sol"
+    android:roundIcon="@mipmap/ic_launcher_sol_round"
+    android:enabled="true"
+    android:exported="true" /&gt;</code></pre>
+    <p class="note">Ajusta nomes, mipmaps e o intent <code>LAUNCHER</code> ao teu manifesto; normalmente um só alias fica <code>enabled="true"</code> de cada vez.</p>
+  </article>
+</body>
+</html>

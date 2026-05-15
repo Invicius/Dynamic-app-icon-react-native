@@ -12,6 +12,8 @@
 		453293025DEB1EC36B36D196 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A04F84D12F01000000000003 /* ReactNativeDynamicAppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04F84D12F01000000000001 /* ReactNativeDynamicAppIcon.swift */; };
+		A04F84D12F01000000000004 /* ReactNativeDynamicAppIcon.mm in Sources */ = {isa = PBXBuildFile; fileRef = A04F84D12F01000000000002 /* ReactNativeDynamicAppIcon.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-DynamicAppIconPOC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DynamicAppIconPOC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DynamicAppIconPOC/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DynamicAppIconPOC/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A04F84D12F01000000000001 /* ReactNativeDynamicAppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactNativeDynamicAppIcon.swift; path = DynamicAppIconPOC/ReactNativeDynamicAppIcon.swift; sourceTree = "<group>"; };
+		A04F84D12F01000000000002 /* ReactNativeDynamicAppIcon.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ReactNativeDynamicAppIcon.mm; path = DynamicAppIconPOC/ReactNativeDynamicAppIcon.mm; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -43,6 +47,8 @@
 			isa = PBXGroup;
 			children = (
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				A04F84D12F01000000000001 /* ReactNativeDynamicAppIcon.swift */,
+				A04F84D12F01000000000002 /* ReactNativeDynamicAppIcon.mm */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -247,6 +253,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
+				A04F84D12F01000000000003 /* ReactNativeDynamicAppIcon.swift in Sources */,
+				A04F84D12F01000000000004 /* ReactNativeDynamicAppIcon.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +266,10 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-DynamicAppIconPOC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3SHWADTY8C;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DynamicAppIconPOC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -288,8 +298,10 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-DynamicAppIconPOC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3SHWADTY8C;
 				INFOPLIST_FILE = DynamicAppIconPOC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
