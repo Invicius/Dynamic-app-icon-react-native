@@ -5,6 +5,8 @@ import android.app.Application
 import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Process
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -18,7 +20,7 @@ class ReactNativeDynamicAppIconModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun changeIcon(iconName: String, promise: Promise) {
-    val activity = currentActivity
+    val activity = reactApplicationContext.currentActivity
     if (activity == null) {
       promise.reject("NO_ACTIVITY", "No foreground activity")
       return
@@ -48,9 +50,10 @@ class ReactNativeDynamicAppIconModule(reactContext: ReactApplicationContext) :
     }
 
     promise.resolve(null)
-    activity.runOnUiThread {
-      scheduleRestartAfterDestroy(activity)
-      activity.finish()
+    val host = activity
+    Handler(Looper.getMainLooper()).post {
+      scheduleRestartAfterDestroy(host)
+      host.finish()
     }
   }
 
